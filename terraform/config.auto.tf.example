@@ -1,0 +1,10 @@
+variable "public_ssh_key" {
+	default = ""
+}
+variable "root_pass" {
+	default = ""
+}
+
+variable "linode_access_token" {
+	default = ""
+}

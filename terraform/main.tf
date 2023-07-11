@@ -3,8 +3,8 @@ resource "linode_instance" "load_balancer" {
 	image = var.image
 	region = var.region
 	type = var.type
-	authorized_keys = [var.PUBLIC_SSH_KEY]
-	root_pass = var.ROOT_PASS
+	authorized_keys = [var.public_ssh_key]
+	root_pass = var.root_pass
 	tags = ["devops-practice-chatty"]
 }
 
