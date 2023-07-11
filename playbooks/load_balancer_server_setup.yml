@@ -1,0 +1,26 @@
+- name: Load Balancer server setup
+  hosts: load_balancer
+  become: yes
+  tasks:
+  - name: Add inbound firewall rule for port 80 
+    firewalld:
+      port: 80/tcp
+      permanent: yes
+      state: enabled
+      immediate: yes
+
+  - name: Install nginx prerequisite
+    package:
+      name: epel-release
+      state: present
+
+  - name: Install nginx
+    package:
+      name: nginx
+      state: present
+
+  - name: Start nginx service
+    service:
+      name: nginx
+      state: started
+      enabled: yes

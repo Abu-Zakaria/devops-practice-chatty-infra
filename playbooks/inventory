@@ -1,0 +1,9 @@
+load_balancer ansible_host=172.105.54.107 ansible_user=root ansible_port=22
+
+[app_servers]
+app01 ansible_host=172.105.61.146 ansible_user=root ansible_port=22
+# app02 ansible_host= ansible_user=root ansible_port=22
+# app03 ansible_host= ansible_user=root ansible_port=22
+
+[db_servers]
+db01 ansible_host=139.144.1.127 ansible_user=root ansible_port=22
