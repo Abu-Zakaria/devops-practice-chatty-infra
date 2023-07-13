@@ -19,7 +19,31 @@
       name: mongodb-org
       state: present
 
-  - name: Start mongodb service
+  - name: Create data directory for MongoDB
+    file:
+      path: /data/db
+      state: directory
+
+  - name: Copy the db password file to the db server
+    copy:
+      src: ./vault_files/db_password.txt
+      dest: /etc/lets_chat_db_password.txt
+
+  - name: Create directory for scripts
+    file:
+      path: /opt/scripts/
+      state: directory
+
+  - name: Copy the shell script for setting up authentication of the database in MongoDB
+    copy:
+      src: ./scripts/db01/mongo_user_setup.sh
+      dest: /opt/scripts/mongo_user_setup.sh
+      mode: 0700
+
+  - name: Setup authentication for app user in MongoDB
+    shell: /opt/scripts/mongo_user_setup.sh
+
+  - name: Start and enable mongodb
     service:
       name: mongod
       state: started
