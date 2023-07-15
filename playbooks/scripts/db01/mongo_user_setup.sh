@@ -6,19 +6,17 @@ DB_USER="app_user"
 DB_PASSWORD=`cat /etc/lets_chat_db_password.txt`
 
 # start the mongodb server in background
-systemctl start mongod
+mongod --fork --logpath /root/mongod.log --dbpath /data/db/
 
 sleep 2
 # create a user for app servers in lets_chat database
-mongosh lets_chat <<EOF
+mongo lets_chat <<EOF
 db.createUser({ "user": "$DB_USER", "pwd": "$DB_PASSWORD", "roles": [{ "role": "readWrite", "db": "$DB_NAME" }] })
 EOF
 
-# stop the mongodb server that is running in the background
-systemctl stop mongod
+sleep 2
 
-# enable authentication for mongodb connection
-sed -i 's/#security:/security:\
-  authorization: "enabled"/g' /etc/mongod.conf
+# stop the mongodb server that is running in the background
+kill -9 `pgrep mongod`
 
 touch /opt/.mongo_db_configured

@@ -2,30 +2,69 @@
   hosts: app_servers
   become: yes
   tasks:
-    - name: Add firewall rule for port 80
-      firewalld:
-        port: 80/tcp
-        permanent: yes
-        immediate: yes
-        state: enabled
+  - debug:
+      var: to_debug
 
-    - name: Install prerequisite for nginx
-      package:
-        name: epel-release
-        state: present
+  - name: Add firewall rule for 5000 port
+    firewalld:
+      zone: public
+      port: 5000/tcp
+      state: enabled
+      permanent: yes
+      immediate: yes
 
-    - name: Install nginx
-      package:
-        name: nginx
-        state: present
+  - name: Install prerequisite for nginx
+    package:
+      name: epel-release
+      state: present
 
-    - name: Start nginx service
-      service:
-        name: nginx
-        state: started
-        enabled: yes
+  - name: Install git, nodejs and npm
+    package:
+      name:
+        - git
+        - nodejs
+        - npm
+      state: present
 
-    - name: Install git
-      package:
-        name: git
-        state: present
+  - shell: "ls /opt"
+    register: repo_dir
+
+  - name: Clone the Repository
+    git:
+      repo: https://github.com/Abu-Zakaria/lets-chat
+      dest: /opt/app
+    when: repo_dir.stdout.find('app') == -1
+
+  - name: Copy the db password file to the db server
+    copy:
+      src: ./vault_files/db_password.txt
+      dest: /etc/lets_chat_db_password.txt
+
+  - name: Copy the db01 ip address file to the db server
+    copy:
+      src: ../db01_ip_address.txt
+      dest: /etc/db01_ip_address.txt
+
+  - name: Create directory for scripts
+    file:
+      path: /opt/scripts/
+      state: directory
+
+  - name: Copy the shell script that will configure the app settings
+    copy:
+      src: ./scripts/app/setup_app_config_prod.sh
+      dest: /opt/scripts/setup_app_config_prod.sh
+      mode: 0700
+
+  - name: Run the script
+    shell: /opt/scripts/setup_app_config_prod.sh
+
+  - name: Install node_modules in the app project
+    shell: cd /opt/app && npm install
+
+  - name: Install pm2 npm package
+    shell: npm install -g pm2
+
+  - name: Run the app
+    shell: cd /opt/app && pm2 start npm -- start
+

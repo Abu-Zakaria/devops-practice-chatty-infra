@@ -2,11 +2,19 @@
   hosts: load_balancer
   become: yes
   tasks:
-  - name: Add inbound firewall rule for port 80 
+  - name: Add firewall rule for port 80 
     firewalld:
       port: 80/tcp
       permanent: yes
       state: enabled
+      immediate: yes
+
+  - name: Add firewall rule for 5000 port
+    firewalld:
+      zone: public
+      port: 5000/tcp
+      state: enabled
+      permanent: yes
       immediate: yes
 
   - name: Install nginx prerequisite
@@ -18,6 +26,38 @@
     package:
       name: nginx
       state: present
+
+  - name: Copy private ip addresses of app servers
+    copy:
+      src: ../app_private_ip_addresses/
+      dest: /etc/app_private_ip_addresses/
+      mode: 0600
+
+  - name: Create directory for files
+    file:
+      path: /opt/files
+      state: directory
+
+  - name: Copy nginx.conf file to the app servers
+    copy:
+      src: ./files/load_balancer/nginx.conf
+      dest: /opt/files/nginx.conf
+      mode: 0600
+
+  - name: Copy the scripts
+    copy:
+      src: ./scripts/load_balancer/
+      dest: /opt/scripts/
+      mode: 0700
+
+  - name: Run script for setting up private ip addresses in local dns
+    shell: /opt/scripts/add_private_ip_addresses_in_dns.sh
+
+  - name: Run script for setting up nginx config
+    shell: /opt/scripts/setup_nginx.sh
+
+  - name: Enable httpd_can_network_connect in SELinux settings
+    shell: setsebool -P httpd_can_network_connect 1
 
   - name: Start nginx service
     service:
