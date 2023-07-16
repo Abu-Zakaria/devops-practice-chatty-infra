@@ -54,6 +54,7 @@
     file:
       path: /secrets
       state: directory
+      mode: 600
 
   - name: Copy the db_password.txt
     copy:
