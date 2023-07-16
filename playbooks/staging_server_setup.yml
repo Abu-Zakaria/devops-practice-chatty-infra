@@ -45,3 +45,28 @@
       repo: https://github.com/Abu-Zakaria/devops-practice-chatty-infra
       dest: /opt/infra
 
+  - name: Copy the db01_ip_address.txt
+    copy:
+      src: ../db01_ip_address.txt
+      dest: /etc/db01_ip_address.txt
+
+  - name: Create secrets directory
+    file:
+      path: /secrets
+      state: directory
+
+  - name: Copy the db_password.txt
+    copy:
+      src: ./vault_files/db_password.txt
+      dest: /secrets/db_password.txt
+
+  - name: Create scripts directory
+    file:
+      path: /opt/scripts
+      state: directory
+
+  - name: Copy the required scripts
+    copy:
+      src: ./scripts/app
+      dest: /opt/scripts
+
