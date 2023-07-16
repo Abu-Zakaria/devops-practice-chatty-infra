@@ -44,4 +44,4 @@
     git:
       repo: https://github.com/Abu-Zakaria/devops-practice-chatty-infra
       dest: /opt/infra
-      version: v0.1.0
+
