@@ -7,3 +7,6 @@ app03 ansible_host= ansible_user=root ansible_port=22
 
 [db_servers]
 db01 ansible_host= ansible_user=root ansible_port=22
+
+[staging_servers]
+staging01 ansible_host= ansible_user=root ansible_port=22

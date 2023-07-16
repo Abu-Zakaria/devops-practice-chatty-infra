@@ -1,18 +1,7 @@
-- name: Setup app servers
-  hosts: app_servers
-  become: yes
+- name: Setup the staging server
+  hosts: staging_servers
+  become: true
   tasks:
-  - debug:
-      var: to_debug
-
-  - name: Add firewall rule for 5000 port
-    firewalld:
-      zone: public
-      port: 5000/tcp
-      state: enabled
-      permanent: yes
-      immediate: yes
-        
   - name: Set distro name
     set_fact:
       mydistribution: "{{ ansible_distribution | lower }}"
@@ -46,3 +35,13 @@
       state: started
       enabled: true
 
+  - name: Install git
+    yum:
+      name: git
+      state: present
+
+  - name: Clone the infrastructure's Github repo
+    git:
+      repo: https://github.com/Abu-Zakaria/devops-practice-chatty-infra
+      dest: /opt/infra
+      version: v0.1.0

@@ -3,4 +3,6 @@ terraform/terraform.tfstate*
 .env
 terraform/.terraform.lock.hcl
 terraform/config.auto.tf
+db01_ip_address.txt
+app_private_ip_addresses/
 
