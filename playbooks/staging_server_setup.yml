@@ -54,12 +54,13 @@
     file:
       path: /secrets
       state: directory
-      mode: 600
+      mode: 0600
 
   - name: Copy the db_password.txt
     copy:
       src: ./vault_files/db_password.txt
       dest: /secrets/db_password.txt
+      mode: 0600
 
   - name: Create scripts directory
     file:
