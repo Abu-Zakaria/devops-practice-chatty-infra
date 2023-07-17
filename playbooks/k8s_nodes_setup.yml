@@ -1,0 +1,25 @@
+- name: Setup app servers
+  hosts: k8s_nodes
+  become: yes
+  tasks:
+  - name: Add firewall rule for 5000 port
+    firewalld:
+      zone: public
+      port: 5000/tcp
+      state: enabled
+      permanent: yes
+      immediate: yes
+
+  - name: Create scripts directory
+    file:
+      path: /opt/scripts
+      state: directory
+
+  - name: Copy the scripts
+    copy:
+      src: ./scripts/k8s_nodes/
+      dest: /opt/scripts/
+
+  - name: Add executable permission to the scripts
+    shell: chmod +x /opt/scripts/*
+

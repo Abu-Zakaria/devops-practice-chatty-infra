@@ -1,18 +1,7 @@
-- name: Setup app servers
-  hosts: app_servers
+- name: Install docker
+  hosts: "{{ add_hosts }}" # should be added in command argument
   become: yes
   tasks:
-  - debug:
-      var: to_debug
-
-  - name: Add firewall rule for 5000 port
-    firewalld:
-      zone: public
-      port: 5000/tcp
-      state: enabled
-      permanent: yes
-      immediate: yes
-        
   - name: Set distro name
     set_fact:
       mydistribution: "{{ ansible_distribution | lower }}"

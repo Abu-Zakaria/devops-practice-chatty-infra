@@ -40,10 +40,15 @@
       name: git
       state: present
 
-  - name: Clone the infrastructure's Github repo
-    git:
-      repo: https://github.com/Abu-Zakaria/devops-practice-chatty-infra
-      dest: /opt/infra
+  - name: Create scripts directory
+    file:
+      path: /opt/scripts
+      state: directory
+
+  - name: Copy the dockerfile
+    copy:
+      src: ../docker/Dockerfile
+      dest: /opt/scripts
 
   - name: Copy the db01_ip_address.txt
     copy:
@@ -62,13 +67,17 @@
       dest: /secrets/db_password.txt
       mode: 0600
 
-  - name: Create scripts directory
+  - name: Create files directory
     file:
-      path: /opt/scripts
+      path: /opt/files
       state: directory
 
-  - name: Copy the required scripts
+  - name: Copy the required files
     copy:
-      src: ./scripts/app
-      dest: /opt/scripts
+      src: ./files/app/
+      dest: /opt/files/
+      mode: 0700
+
+  - name: Build the docker image
+    shell: docker build / -t cynax/chatty -f /opt/scripts/Dockerfile
 

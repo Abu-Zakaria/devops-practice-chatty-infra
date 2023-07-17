@@ -1,6 +1,6 @@
 APP_DIR=/opt/app
 DB_USER=app_user
-DB_PASS=`cat /etc/lets_chat_db_password.txt | sed "s/@/%40/g"`
+DB_PASS=`cat /secrets/db_password.txt | sed "s/@/%40/g"`
 DB_HOST=`cat /etc/db01_ip_address.txt`
 
 cd $APP_DIR

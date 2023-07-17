@@ -1,12 +1,21 @@
-load_balancer ansible_host= ansible_user=root ansible_port=22
+load_balancer ansible_host=192.46.209.163 ansible_user=root ansible_port=22
 
-[app_servers]
-app01 ansible_host= ansible_user=root ansible_port=22
-app02 ansible_host= ansible_user=root ansible_port=22
-app03 ansible_host= ansible_user=root ansible_port=22
+[k8s_masters]
+k8s_master ansible_host=172.105.36.103 ansible_user=root ansible_port=22
+
+[k8s_nodes]
+k8s_node01 ansible_host=45.79.126.20 ansible_user=root ansible_port=22
+k8s_node02 ansible_host=192.46.212.118 ansible_user=root ansible_port=22
+#k8s_node03 ansible_host=192.46.209.112 ansible_user=root ansible_port=22
+
+[k8s_servers:children]
+k8s_masters
+k8s_nodes
+
 
 [db_servers]
-db01 ansible_host= ansible_user=root ansible_port=22
+db01 ansible_host=172.105.42.210 ansible_user=root ansible_port=22
 
-[staging_servers]
-staging01 ansible_host= ansible_user=root ansible_port=22
+[preprod_servers]
+preprod01 ansible_host=170.187.251.141 ansible_user=root ansible_port=22
+

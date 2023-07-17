@@ -10,12 +10,11 @@ variable "type" {
 	default = "g6-nanode-1"
 }
 
-variable "app_servers" {
+variable "k8s_nodes" {
 	type = list(string)
 	default = [
-		"app01",
-		"app02",
-		"app03"
+		"k8s_node01",
+		"k8s_node02"
 	]
 }
 

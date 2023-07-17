@@ -4,12 +4,15 @@ RUN apk add git
 
 RUN git clone https://github.com/Abu-Zakaria/lets-chat.git /opt/app
 
-RUN mkdir /opt/scripts
-COPY /opt/scripts /opt/scripts
-COPY /secrets/db_password.txt /etc/db_password.txt
+RUN mkdir /opt/files
+COPY /opt/files/ /opt/files/
+RUN mkdir /secrets
+COPY /secrets/db_password.txt /secrets/db_password.txt
 COPY /etc/db01_ip_address.txt /etc/db01_ip_address.txt
 
 WORKDIR /opt/app
+
+RUN /opt/files/setup_app_config_prod.sh
 
 RUN npm install
 
