@@ -1,0 +1,17 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: chatty-load-balancer
+  labels:
+    type: load_balancer
+    project: chatty
+spec:
+  type: LoadBalancer
+  selector:
+    project: backend
+    type: chatty_pod
+  ports:
+  - protocol: TCP
+    port: 80
+    targetPort: 5000
+

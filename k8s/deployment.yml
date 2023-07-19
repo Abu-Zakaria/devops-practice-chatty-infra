@@ -1,0 +1,25 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: chatty-deployment
+  labels:
+    project: chatty
+    type: backend
+spec:
+  replicas: 5
+  selector:
+    matchLabels:
+      type: chatty_pod
+  template:
+    metadata:
+      name: chatty-pod
+      labels:
+        type: chatty_pod
+        project: backend
+    spec:
+      containers:
+      - name: chatty
+        image: cynax/chatty:latest
+        ports:
+        - containerPort: 5000
+

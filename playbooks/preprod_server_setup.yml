@@ -1,5 +1,5 @@
 - name: Setup the staging server
-  hosts: staging_servers
+  hosts: preprod_servers
   become: true
   tasks:
   - name: Set distro name

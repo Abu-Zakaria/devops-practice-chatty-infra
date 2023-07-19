@@ -18,3 +18,32 @@ variable "k8s_nodes" {
 	]
 }
 
+variable "k8s_version" {
+	default = "1.26"
+}
+
+variable "k8s_cluster_label" {
+	default = "chatty_k8s_cluster"
+}
+
+variable "tags" {
+	type = list(string)
+	default = [
+		"devops-practice-chatty"
+	]
+}
+
+variable "pools" {
+	type = list(object({
+			type = string
+			count = number
+		})
+	)
+	default = [
+		{
+			type = "g6-standard-1",
+			count = 3
+		}
+	]
+}
+

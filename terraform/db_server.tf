@@ -5,7 +5,7 @@ resource "linode_instance" "db01" {
 	type = var.type
 	authorized_keys = [var.public_ssh_key]
 	root_pass = var.root_pass
-	tags = ["devops-practice-chatty"]
+	tags = var.tags
 	private_ip = true
 }
 
